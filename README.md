@@ -19,7 +19,7 @@ config :ambassador,
   reply_to_whitelist: {:system, "AMBASSADOR_REPLYTO_WHITELIST", "noreply@example.com"}
 
 config :token_auth,
-  token: {:system, "AMBASSADOR_TOKEN", "your-token"},
+  token: System.get_env("AMBASSADOR_TOKEN"),
   realm: "Authentication"
 ```
 

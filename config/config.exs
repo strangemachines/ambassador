@@ -27,7 +27,7 @@ config :ambassador,
   error_uri: {:system, "AMBASSADOR_ERROR_URI", nil}
 
 config :token_auth,
-  token: {:system, "AMBASSADOR_TOKEN", nil},
+  token: System.get_env("AMBASSADOR_TOKEN"),
   realm: "Authentication"
 
 import_config "#{Mix.env()}.exs"
