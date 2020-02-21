@@ -13,30 +13,4 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 defmodule Ambassador do
-  alias Plug.Cowboy
-
-  alias Ambassador.Router
-  require Logger
-
-  def port, do: Confex.get_env(:ambassador, :port)
-  def compress, do: Confex.get_env(:ambassador, :compress)
-
-  def loop do
-    loop()
-  end
-
-  def start(_type, _args) do
-    port = Ambassador.port()
-
-    children = [
-      {Cowboy,
-       scheme: :http,
-       plug: Router,
-       options: [port: port, compress: Ambassador.compress()]}
-    ]
-
-    Logger.info("Starting ambassador on port #{port}")
-    Supervisor.start_link(children, strategy: :one_for_one)
-    Ambassador.loop()
-  end
 end

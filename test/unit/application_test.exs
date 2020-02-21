@@ -12,38 +12,33 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-defmodule AmbassadorTest do
+defmodule AmbassadorTest.Application do
   use ExUnit.Case
   import Dummy
 
-  test "the port method" do
+  alias Ambassador.Application
+
+  test "port/0" do
     dummy Confex, ["get_env/2"] do
-      Ambassador.port()
+      Application.port()
       assert called(Confex.get_env(:ambassador, :port))
     end
   end
 
-  test "the compress method" do
+  test "compress/0" do
     dummy Confex, ["get_env/2"] do
-      Ambassador.compress()
+      Application.compress()
       assert called(Confex.get_env(:ambassador, :compress))
-    end
-  end
-
-  test "loop" do
-    dummy Ambassador, [{"loop", fn -> :loop end}] do
-      assert Ambassador.loop() == :loop
     end
   end
 
   test "the start method" do
     dummy Supervisor, ["start_link/2"] do
-      dummy Ambassador, [
+      dummy Application, [
         {"port", fn -> :port end},
-        {"compress", fn -> :compress end},
-        {"loop", fn -> :loop end}
+        {"compress", fn -> :compress end}
       ] do
-        Ambassador.start(:a, :b)
+        Application.start(:a, :b)
 
         children = [
           {Plug.Cowboy,
@@ -53,7 +48,6 @@ defmodule AmbassadorTest do
         ]
 
         assert called(Supervisor.start_link(children, strategy: :one_for_one))
-        assert called(Ambassador.loop())
       end
     end
   end
