@@ -19,18 +19,10 @@ defmodule Ambassador.MixProject do
     ]
   end
 
-  defp mod do
-    if Mix.env() == :prod do
-      {Ambassador, []}
-    else
-      []
-    end
-  end
-
   def application do
     [
-      mod: mod(),
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {Ambassador.Application, []}
     ]
   end
 
