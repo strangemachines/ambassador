@@ -17,8 +17,6 @@ defmodule Ambassador.Adapters.Sendgrid do
   use Tesla
   alias Ambassador.Adapters.Sendgrid
 
-  import Ambassador.Adapter
-
   plug(Tesla.Middleware.BaseUrl, "https://api.sendgrid.com/v3")
   plug(Tesla.Middleware.JSON)
 
@@ -59,21 +57,7 @@ defmodule Ambassador.Adapters.Sendgrid do
   end
 
   @impl true
-  def validate(data) do
-    {true, data}
-    |> is_address_allowed("from", :from_whitelist)
-    |> is_address_allowed("to", :mail_to_whitelist)
-    |> is_address_allowed("reply_to", :reply_to_whitelist)
-  end
-
-  @impl true
   def send_mail(data) do
-    case Sendgrid.validate(data) do
-      {true, data} ->
-        Sendgrid.send(data)
-
-      {false, _} ->
-        %{:body => "Recipient or sender not allowed", :status => 400}
-    end
+    Sendgrid.send(data)
   end
 end

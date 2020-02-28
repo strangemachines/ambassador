@@ -16,22 +16,21 @@ defmodule AmbassadorTest.Adapters.Sendgrid do
   use ExUnit.Case
   import Dummy
 
-  alias Ambassador.Adapter
   alias Ambassador.Adapters.Sendgrid
 
-  test "the parse_options function" do
+  test "parse_options/0" do
     dummy Confex, ["get_env/2"] do
       assert Sendgrid.parse_options() == [[:ambassador, :api_options]]
     end
   end
 
-  test "the token function" do
+  test "token/0" do
     dummy Sendgrid, [{"parse_options", fn -> [:token] end}] do
       assert Sendgrid.token() == :token
     end
   end
 
-  test "the payload function" do
+  test "payload/1" do
     fields = %{
       "to" => :to,
       "to_name" => :to_name,
@@ -52,7 +51,7 @@ defmodule AmbassadorTest.Adapters.Sendgrid do
     assert result[:reply_to] == %{email: :reply_to, name: :reply_to_name}
   end
 
-  test "the send function" do
+  test "send/1" do
     headers = [{"authorization", "Bearer token"}]
 
     dummy Sendgrid, [
@@ -76,38 +75,12 @@ defmodule AmbassadorTest.Adapters.Sendgrid do
     end
   end
 
-  test "the validate function" do
-    dummy Adapter, [{"is_address_allowed", fn _a, _b, _c -> :result end}] do
-      result = Sendgrid.validate("data")
-
-      assert called(
-               Adapter.is_address_allowed(
-                 :result,
-                 "reply_to",
-                 :reply_to_whitelist
-               )
-             )
-
-      assert result == :result
-    end
-  end
-
-  test "the send_mail function" do
+  test "send_mail/1" do
     data = %{"from" => :from, "to" => :to}
 
-    dummy Sendgrid, [{"validate", {true, data}}, {"send", :send}] do
+    dummy Sendgrid, [{"send", :send}] do
       assert Sendgrid.send_mail(data) == :send
-      assert called(Sendgrid.validate(data))
       assert called(Sendgrid.send(data))
-    end
-  end
-
-  test "the send_mail function with failed validation" do
-    data = %{"from" => :from, "to" => :to}
-    expected = %{:body => "Recipient or sender not allowed", :status => 400}
-
-    dummy Sendgrid, [{"validate", {false, data}}] do
-      assert Sendgrid.send_mail(data) == expected
     end
   end
 end
