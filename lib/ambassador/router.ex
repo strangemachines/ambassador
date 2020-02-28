@@ -18,7 +18,6 @@ defmodule Ambassador.Router do
 
   use Plug.Router
 
-  @mode Confex.get_env(:ambassador, :mode)
   @token Confex.get_env(:token_auth, :token)
 
   if @token do
@@ -31,12 +30,7 @@ defmodule Ambassador.Router do
 
   post "/send" do
     Log.processing(conn)
-
-    if @mode == :transactional do
-      Handler.transactional(conn)
-    else
-      Handler.form(conn)
-    end
+    Handler.transactional(conn)
   end
 
   match(
