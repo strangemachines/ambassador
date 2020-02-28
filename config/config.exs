@@ -15,16 +15,10 @@
 use Mix.Config
 
 config :ambassador,
-  mode: {:system, "AMBASSADOR_MODE", :transactional},
   port: {:system, :integer, "AMBASSADOR_PORT", 8000},
   compress: {:system, "AMBASSADOR_COMPRESS", true},
   api_adapter: {:system, "AMBASSADOR_API_ADAPTER", "Sendgrid"},
-  api_options: {:system, "AMBASSADOR_API_OPTIONS", "api_key"},
-  from_whitelist: {:system, "AMBASSADOR_FROM_WHITELIST", false},
-  mail_to_whitelist: {:system, "AMBASSADOR_MAILTO_WHITELIST", false},
-  reply_to_whitelist: {:system, "AMBASSADOR_REPLYTO_WHITELIST", false},
-  success_uri: {:system, "AMBASSADOR_SUCCESS_URI", nil},
-  error_uri: {:system, "AMBASSADOR_ERROR_URI", nil}
+  api_options: {:system, "AMBASSADOR_API_OPTIONS", "api_key"}
 
 config :token_auth,
   token: System.get_env("AMBASSADOR_TOKEN"),
