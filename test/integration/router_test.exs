@@ -20,9 +20,9 @@ defmodule AmbassadorTest.Router do
 
   @expected_headers ["application/json; charset=utf-8"]
 
-  test "sending an email" do
+  test "POST /" do
     response =
-      conn(:post, "/send")
+      conn(:post, "/")
       |> put_req_header("authorization", "Bearer token")
       |> Router.call([])
 

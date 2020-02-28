@@ -28,7 +28,7 @@ defmodule Ambassador.Router do
   plug(:match)
   plug(:dispatch)
 
-  post "/send" do
+  post "/" do
     Log.processing(conn)
     Handler.transactional(conn)
   end
