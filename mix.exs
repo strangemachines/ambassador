@@ -43,13 +43,12 @@ defmodule Ambassador.MixProject do
   defp deps do
     [
       {:confex, "~> 3.4"},
-      {:cowboy, "~> 1.0"},
       {:credo, "~> 0.9", only: [:dev, :test], runtime: false},
       {:dummy, "~> 1.1", only: :test},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
       {:jason, "~> 1.1"},
-      {:plug, "~> 1.0"},
-      {:plug_cowboy, "~> 1.0"},
+      {:plug, "~> 1.9"},
+      {:plug_cowboy, "~> 2.1"},
       {:tesla, "~> 1.3"},
       {:token_auth, "~> 1.1"}
     ]
