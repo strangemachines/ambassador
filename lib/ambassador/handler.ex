@@ -19,29 +19,11 @@ defmodule Ambassador.Handler do
 
   @adapter Confex.get_env(:ambassador, :api_adapter)
   @mail String.to_existing_atom("Elixir.Ambassador.Adapters.#{@adapter}")
-  @error_uri Confex.get_env(:ambassador, :error_uri)
-  @success_uri Confex.get_env(:ambassador, :success_uri)
 
   def send_json(conn, status, payload) do
     conn
     |> Conn.put_resp_content_type("application/json")
     |> Conn.send_resp(status, Jason.encode!(payload))
-  end
-
-  def send_to_other(conn, location) do
-    conn
-    |> Conn.put_resp_header("location", location)
-    |> Conn.send_resp(303, [])
-  end
-
-  def form(conn) do
-    response = @mail.send_mail(conn.body_params)
-    Log.processed(response)
-
-    case response do
-      %{:status => 200} -> Handler.send_to_other(conn, @success_uri)
-      _ -> Handler.send_to_other(conn, @error_uri)
-    end
   end
 
   def transactional(conn) do
