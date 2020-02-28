@@ -15,6 +15,5 @@
 defmodule Ambassador.Adapters.Mail do
   @callback parse_options() :: List
   @callback payload(fields :: any) :: Map
-  @callback validate(data :: Map) :: {Bool, Map}
   @callback send_mail(data :: Map) :: Map
 end

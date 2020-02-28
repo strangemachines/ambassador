@@ -25,10 +25,6 @@ defmodule AmbassadorTest.Adapters.Mock do
     assert Mock.payload(:fields) == %{}
   end
 
-  test "validate" do
-    assert Mock.validate(:data) == {true, :data}
-  end
-
   test "send_mail/1" do
     assert Mock.send_mail(%{}) == %{:body => "json", :status => 202}
   end

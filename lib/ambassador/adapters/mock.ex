@@ -22,8 +22,5 @@ defmodule Ambassador.Adapters.Mock do
   def payload(_), do: %{}
 
   @impl true
-  def validate(data), do: {true, data}
-
-  @impl true
   def send_mail(_data), do: %{:body => "json", :status => 202}
 end
